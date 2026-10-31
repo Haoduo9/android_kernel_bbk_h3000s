@@ -666,6 +666,16 @@ static u32 charging_set_cv_voltage(void *data)
 		/* use nearest value */
 		cv_value = 4208000;
 	}
+	/* fallback: if requested CV is outside the VBAT_CV_VTH table range,
+	 * charging_parameter_to_value() returns 0 => VREG would be set to the
+	 * lowest step (3.504V) and charging would silently never start.
+	 * Snap to the closest supported step instead. */
+	{
+		u32 nearest = bmt_find_closest_level(VBAT_CV_VTH, GETARRAYNUM(VBAT_CV_VTH), cv_value);
+
+		if (nearest != 0)
+			cv_value = nearest;
+	}
 	register_value =
 	    charging_parameter_to_value(VBAT_CV_VTH, GETARRAYNUM(VBAT_CV_VTH), cv_value);
 	bq24196_set_vreg(register_value);

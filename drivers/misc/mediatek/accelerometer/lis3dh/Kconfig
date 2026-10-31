@@ -1,0 +1,11 @@
+config MTK_LIS3DH
+	bool "LIS3DH accelerometer for MediaTek package"
+	default n
+	help
+	  Support for the STMicroelectronics LIS3DH 3-axis accelerometer
+	  (I2C, address 0x19) on MediaTek platforms. This driver plugs into
+	  the MediaTek accelerometer framework (drivers/misc/mediatek/
+	  accelerometer/accel.c) and exposes /dev/m_acc_misc + the
+	  m_acc_input input device used by the android sensors HAL.
+
+	  If unsure, say N.
